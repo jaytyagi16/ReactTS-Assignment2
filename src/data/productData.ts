@@ -1,15 +1,8 @@
 import af1 from "../assets/airforce1.png"
 import speedcat from "../assets/speedcat.avif"
 import samba from "../assets/sambas.avif"
+import { Product } from "../types/Product";
 
-interface Product {
-    _id: number;
-    image: string;
-    name: string;
-    description: string;
-    star_rating: number;
-    price: number;
-}
 
 const products: Product[] = [
     {

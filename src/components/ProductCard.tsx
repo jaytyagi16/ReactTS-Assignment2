@@ -1,19 +1,16 @@
 import React from 'react'
 import shoppingCartIcon from "../assets/shopping-cart.png"
 import star from "../assets/star.png"
+import { Product } from '../types/Product'
 
-interface ProductCardProps{
-    _id: number;
-    image: string;
-    name: string;
-    description: string;
-    star_rating: number;
-    price: number;
-    isLoggedIn?: boolean
+interface ProductCardProps extends Product{
+    isLoggedIn?: boolean;
+    addToCart: () => void;
+    isInCart: boolean;
 }
 
 const ProductCard: React.FC<ProductCardProps> = (props) => {
-    const {_id, image, name, description, star_rating, price, isLoggedIn = false} = props;
+    const {image, name, description, star_rating, price, isLoggedIn = false, addToCart, isInCart} = props;
   return (
     <div>
         <div className='flex flex-col gap-2 border rounded-xl overflow-hidden'>
@@ -33,15 +30,16 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
                 {
                     isLoggedIn ? 
                     (
-                        <div className='bg-green-700 text-white rounded-xl p-2 px-3 mt-2 w-fit flex gap-2 cursor-pointer hover:bg-green-600 transition-all duration-200'>
+                        <button className={`bg-green-700 text-white rounded-xl p-2 px-3 mt-2 w-fit flex gap-2 cursor-pointer transition-all duration-200 ${isInCart ? "opacity-50 cursor-not-allowed" : "hover:bg-green-600"}`}
+                        onClick={addToCart}
+                        >
                             <img src={shoppingCartIcon} alt="CartIcon" width={20} height={19} loading='lazy' />
-                            <p>Add to cart</p>
-                        </div>
+                            <p>{isInCart ? "Added to Cart" : "Add to Cart"}</p>
+                        </button>
                     ) :
                     (
                         <p>Please login to add to cart</p>
                     )
-
                 }
             </div>
         </div>

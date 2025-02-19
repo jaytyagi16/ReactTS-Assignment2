@@ -3,21 +3,18 @@ import heartFilled from "./assets/heartFilled.png"
 import heartUnfilled from "./assets/heartUnfilled.png"
 import ProductCard from "./components/ProductCard"
 import products from "./data/productData"
-
-interface Product {
-  _id: number;
-  image: string;
-  name: string;
-  description: string;
-  star_rating: number;
-  price: number;
-}
+import { Product } from "./types/Product"
 
 const App = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
   const [cartItems, setCartItems] = useState<Product[]>([]);
 
+  const addToCart = (product: Product) => {
+    if(!cartItems.some((item) => item._id === product._id)){
+      setCartItems((prevCart) => [...prevCart, product]);
+    }
+  }
 
   return (
     <div className='max-w-screen'>
@@ -54,13 +51,10 @@ const App = () => {
               products.map((product) => (
                 <div key={product._id} className="mx-5 p-5 hover:cursor-pointer hover:scale-102 transition-all duration-300 hover:drop-shadow-xl">
                   <ProductCard
-                  image={product.image}
-                  description={product.description}
-                  price={product.price}
-                  star_rating={product.star_rating}
-                  name={product.name}
-                  _id={product._id}
+                  {...product}
                   isLoggedIn={isLoggedIn}
+                  addToCart={() => addToCart(product)}
+                  isInCart={cartItems.some((item) => item._id === product._id)}
                 />
                 </div>
               ))
