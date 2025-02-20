@@ -38,7 +38,7 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
                         </button>
                     ) :
                     (
-                        <p>Please login to add to cart</p>
+                        <em>Please login to add to cart</em>
                     )
                 }
             </div>
