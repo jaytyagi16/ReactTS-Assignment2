@@ -10,23 +10,23 @@ interface ProductCardProps extends Product{
 }
 
 const ProductCard: React.FC<ProductCardProps> = (props) => {
-    const {image, name, description, star_rating, price, isLoggedIn = false, addToCart, isInCart} = props;
+    const {image, title, description, rating, price, isLoggedIn = false, addToCart, isInCart} = props;
   return (
     <div>
-        <div className='flex flex-col gap-2 border rounded-xl overflow-hidden'>
+        <div className='flex flex-col gap-2 border rounded-xl overflow-hidden h-[450px]'>
             {/* image container */}
-            <div className='w-full border-b overflow-hidden'>
-                <img src={image} alt="Image" loading='lazy' className='w-full h-fit object-cover' />
+            <div className='h-[40%] border-b'>
+                <img src={image} alt="Image" loading='lazy' className='w-full h-full object-contain select-none' />
             </div>
 
-            <div className='flex flex-col gap-2 px-4 pb-2'>
-                <p className='font-bold'>{name}</p>
+            <div className='flex flex-col justify-evenly gap-2 px-4 pb-2 h-[70%]'>
+                <p className='font-bold text-sm'>{title.split(" ").slice(0, 4).join(" ") + "..."}</p>
                 <div className='flex items-center gap-2'>
-                    <p>{star_rating}</p>
+                    <p>{rating.rate}</p>
                     <img src={star} alt="Star" loading='lazy' width={19} height={19}/>
                 </div>
-                <p className='text-sm'>{description}</p>
-                <p className='font-semibold'>Rs. {price}</p>
+                <p className='text-xs'>{description.split(" ").slice(0, 10).join(" ") + "..."}</p>
+                <p className='font-semibold'>${price}</p>
                 {
                     isLoggedIn ? 
                     (
