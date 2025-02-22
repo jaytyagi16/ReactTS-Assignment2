@@ -16,7 +16,7 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
         <div className='flex flex-col gap-2 border rounded-xl overflow-hidden h-[450px]'>
             {/* image container */}
             <div className='h-[40%] border-b'>
-                <img src={image} alt="Image" loading='lazy' className='w-full h-full object-contain select-none' />
+                <img src={image} alt="Image" loading='lazy' className='w-full h-full object-contain select-none p-2' />
             </div>
 
             <div className='flex flex-col justify-evenly gap-2 px-4 pb-2 h-[70%]'>
