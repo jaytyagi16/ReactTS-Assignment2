@@ -31,7 +31,10 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
                     isLoggedIn ? 
                     (
                         <button className={`bg-green-700 text-white rounded-xl p-2 px-3 mt-2 w-fit flex gap-2 cursor-pointer transition-all duration-200 ${isInCart ? "opacity-50 cursor-not-allowed" : "hover:bg-green-600"}`}
-                        onClick={addToCart}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            addToCart();
+                        }}
                         >
                             <img src={shoppingCartIcon} alt="CartIcon" width={20} height={19} loading='lazy' />
                             <p>{isInCart ? "Added to Cart" : "Add to Cart"}</p>
