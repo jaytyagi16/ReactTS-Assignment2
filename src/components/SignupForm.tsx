@@ -3,8 +3,6 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginForm, signupFormInputs } from "../types/Forms";
-import { useAppDispatch } from "../redux/hooks";
-import { setIsLoggedIn } from "../redux/slices/authSlice";
 
 const schemaValidation = Yup.object({
   firstName: Yup.string().required("First Name is Required"),

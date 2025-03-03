@@ -6,14 +6,15 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setCartItem } from "../redux/slices/cartSlice";
+import { useNavigate } from "react-router";
 
 const Home = () => {
-  //consider removing
   const [cartItems, setCartItems] = useState<Product[]>([]);
 
   const { emailId, isLoggedIn } = useAppSelector((state) => state.auth);
   const cartState = useAppSelector((state) => state.cart.carts[emailId] || []);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const addToCart = (product: Product) => {
     if (!isLoggedIn) {
@@ -22,7 +23,6 @@ const Home = () => {
     }
     if (!cartState.some((item) => item.id === product.id)) {
       const updatedCart = [...cartState, product];
-      //consider removing
       setCartItems(updatedCart);
       dispatch(setCartItem({ userEmail: emailId, cartItems: updatedCart }));
     }
@@ -63,6 +63,7 @@ const Home = () => {
               <div
                 key={product.id}
                 className="mx-2 p-5 hover:cursor-pointer hover:scale-102 transition-all duration-300"
+                onClick={() => navigate(`/products/${product.id}`)}
               >
                 <ProductCard
                   {...product}
