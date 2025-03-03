@@ -1,10 +1,15 @@
 import React from 'react'
 import cartIcon from "../assets/shopping-cart.png"
 import { useNavigate } from 'react-router'
+import { useAppSelector } from '../redux/hooks';
+import heartIcon from "../assets/heartFilled.png"
 
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
+  const {isLoggedIn, emailId} = useAppSelector(state => state.auth);
+  const cartItems = useAppSelector(state => state.cart.carts[emailId] || []);
+  const cartCount = cartItems.length;
 
   return (
     <nav className='flex items-center justify-between'>
@@ -21,14 +26,21 @@ const Navbar: React.FC = () => {
 
       {/* cart and login */}
       <div className='flex items-center gap-8'>
-        <img src={cartIcon} alt="Cart Icon" width={28} loading='lazy' className='cursor-pointer'/>
+        <div className='flex items-center gap-2 font-semibold'>
+          <img src={cartIcon} alt="Cart Icon" width={28} loading='lazy' className='cursor-pointer'/>
+          <p>: {cartCount}</p>
+        </div>
 
-        <button
-          className='text-white bg-slate-900 px-6 py-3 rounded-full cursor-pointer hover:bg-slate-700 transition-all duration-200 font-semibold'
-          onClick={() => navigate('/')}
-        >
-          Log in
-        </button>
+        {
+          isLoggedIn ? 
+          <img src={heartIcon} alt="Heart Icon" width={25} /> :
+            <button
+            className='text-white bg-slate-900 px-6 py-3 rounded-full cursor-pointer hover:bg-slate-700 transition-all duration-200 font-semibold'
+            onClick={() => navigate('/')}
+          >
+            Log in
+          </button>
+        }
       </div>
     </nav>
   )

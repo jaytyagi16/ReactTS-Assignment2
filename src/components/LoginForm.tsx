@@ -5,6 +5,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router";
 import { loginForm } from "../types/Forms";
 import { UserStore } from "./SignupForm";
+import { useAppDispatch } from "../redux/hooks";
+import { setIsLoggedIn } from "../redux/slices/authSlice";
 
 const schemaValidation = Yup.object({
   email: Yup.string()
@@ -23,6 +25,7 @@ const LoginForm: React.FC = () => {
   });
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const onSubmit = (data: loginForm) => {
     const userEmail = data.email;
@@ -42,6 +45,10 @@ const LoginForm: React.FC = () => {
 
     if (foundUser) {
       alert("Login successful");
+      dispatch(setIsLoggedIn({
+        emailId: userEmail,
+        isLoggedIn: true
+      }))
       navigate("/home");
     } else {
       alert("Incorrect email or password");
