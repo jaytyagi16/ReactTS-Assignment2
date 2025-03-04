@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { Product } from "../types/Product";
 import axios from "axios";
@@ -6,10 +6,14 @@ import Navbar from "../components/Navbar";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setCartItem } from "../redux/slices/cartSlice";
 import { useNavigate } from "react-router";
+import SearchBar from "../components/SearchBar";
 
 const Home = () => {
   const [cartItems, setCartItems] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+
   const { emailId, isLoggedIn } = useAppSelector((state) => state.auth);
   const cartState = useAppSelector((state) => state.cart.carts[emailId] || []);
   const dispatch = useAppDispatch();
@@ -28,8 +32,6 @@ const Home = () => {
     }
   };
 
-  const [products, setProducts] = useState<Product[]>([]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,7 +39,9 @@ const Home = () => {
         
         const cachedProducts = sessionStorage.getItem("products");
         if (cachedProducts) {
-          setProducts(JSON.parse(cachedProducts));
+          const parsedProducts = JSON.parse(cachedProducts);
+          setProducts(parsedProducts);
+          setFilteredProducts(parsedProducts);
           setIsLoading(false);
           return;
         }
@@ -45,6 +49,7 @@ const Home = () => {
         const url = "https://fakestoreapi.com/products";
         const data = (await axios.get(url)).data;
         setProducts(data);
+        setFilteredProducts(data);
         sessionStorage.setItem("products", JSON.stringify(data));
         setIsLoading(false);
       } catch (error) {
@@ -62,7 +67,6 @@ const Home = () => {
 
   useEffect(() => {
     const savedScrollPosition = sessionStorage.getItem("scrollPosition");
-    console.log(savedScrollPosition)
     if (savedScrollPosition) {
       window.scrollTo(0, parseInt(savedScrollPosition));
     }
@@ -79,6 +83,11 @@ const Home = () => {
         {/* header */}
         <Navbar />
 
+        <SearchBar
+          products={products}
+          setFilteredProducts={setFilteredProducts}
+        />
+
         {/* products */}
         {isLoading ? (
           <div className="flex items-center justify-center h-screen overflow-y-hidden">
@@ -86,8 +95,8 @@ const Home = () => {
           </div>
         ) : (
           <div className="w-full mt-10 grid grid-cols-4">
-            {products.length > 0 ? (
-              products.map((product) => (
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
                 <div
                   key={product.id}
                   className="mx-2 p-5 hover:cursor-pointer hover:scale-102 transition-all duration-300"
@@ -102,7 +111,7 @@ const Home = () => {
                 </div>
               ))
             ) : (
-              <h2 className="text-center">No products to show</h2>
+              <h2 className="text-center ">No products to show</h2>
             )}
           </div>
         )}
