@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ProductCard from "../components/ProductCard";
-//import products from "../data/productData";
 import { Product } from "../types/Product";
 import axios from "axios";
 import Navbar from "../components/Navbar";
@@ -10,10 +9,11 @@ import { useNavigate } from "react-router";
 
 const Home = () => {
   const [cartItems, setCartItems] = useState<Product[]>([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   const { emailId, isLoggedIn } = useAppSelector((state) => state.auth);
   const cartState = useAppSelector((state) => state.cart.carts[emailId] || []);
   const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
 
   const addToCart = (product: Product) => {
@@ -30,17 +30,27 @@ const Home = () => {
 
   const [products, setProducts] = useState<Product[]>([]);
 
-  const fetchData = async () => {
-    try {
-      const url = "https://fakestoreapi.com/products";
-      const data = (await axios.get(url)).data;
-      setProducts(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        
+        const cachedProducts = sessionStorage.getItem("products");
+        if (cachedProducts) {
+          setProducts(JSON.parse(cachedProducts));
+          setIsLoading(false);
+          return;
+        }
+  
+        const url = "https://fakestoreapi.com/products";
+        const data = (await axios.get(url)).data;
+        setProducts(data);
+        sessionStorage.setItem("products", JSON.stringify(data));
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     fetchData();
   }, []);
 
@@ -50,6 +60,19 @@ const Home = () => {
     }
   }, [isLoggedIn, emailId, cartState]);
 
+  useEffect(() => {
+    const savedScrollPosition = sessionStorage.getItem("scrollPosition");
+    console.log(savedScrollPosition)
+    if (savedScrollPosition) {
+      window.scrollTo(0, parseInt(savedScrollPosition));
+    }
+  }, []);
+
+  const handleProductClick = (productId: number) => {
+    sessionStorage.setItem("scrollPosition", window.scrollY.toString());
+    navigate(`/products/${productId}`);
+  };
+
   return (
     <div className="max-w-screen">
       <div className="w-[90%] mx-auto mt-5">
@@ -57,26 +80,32 @@ const Home = () => {
         <Navbar />
 
         {/* products */}
-        <div className="w-full mt-10 grid grid-cols-4">
-          {products.length > 0 ? (
-            products.map((product) => (
-              <div
-                key={product.id}
-                className="mx-2 p-5 hover:cursor-pointer hover:scale-102 transition-all duration-300"
-                onClick={() => navigate(`/products/${product.id}`)}
-              >
-                <ProductCard
-                  {...product}
-                  isLoggedIn={isLoggedIn}
-                  addToCart={() => addToCart(product)}
-                  isInCart={cartItems.some((item) => item.id === product.id)}
-                />
-              </div>
-            ))
-          ) : (
-            <h2>No Products to show</h2>
-          )}
-        </div>
+        {isLoading ? (
+          <div className="flex items-center justify-center h-screen overflow-y-hidden">
+            <div className="loader"></div>
+          </div>
+        ) : (
+          <div className="w-full mt-10 grid grid-cols-4">
+            {products.length > 0 ? (
+              products.map((product) => (
+                <div
+                  key={product.id}
+                  className="mx-2 p-5 hover:cursor-pointer hover:scale-102 transition-all duration-300"
+                  onClick={() => handleProductClick(product.id)}
+                >
+                  <ProductCard
+                    {...product}
+                    isLoggedIn={isLoggedIn}
+                    addToCart={() => addToCart(product)}
+                    isInCart={cartItems.some((item) => item.id === product.id)}
+                  />
+                </div>
+              ))
+            ) : (
+              <h2 className="text-center">No products to show</h2>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

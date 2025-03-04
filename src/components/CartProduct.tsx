@@ -32,7 +32,7 @@ const CartProduct: React.FC<CartProductProps> = (props) => {
           {description.split(" ").slice(0, 20).join(" ") + "..."}
         </p>
         <div className="flex justify-between items-center mt-3">
-          <p className="font-bold text-lg">${price}</p>
+          <p className="font-bold text-lg text-green-700">${price}</p>
           <RiDeleteBin7Fill className="text-red-500 text-xl cursor-pointer hover:text-red-700 transition" 
             onClick={() => removeProduct(_id)}
           />
