@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage"
 import ProductDetails from "./pages/ProductDetails"
 import Cart from "./pages/Cart"
 import { ToastContainer } from "react-toastify"
+import ErrorPage from "./pages/ErrorPage"
 
 const App = () => {
   return (
@@ -27,6 +28,11 @@ const App = () => {
         <Route
           path="/cart"
           element={<Cart/>}
+        />
+
+        <Route
+          path="*"
+          element={<ErrorPage/>}
         />
       </Routes>
 
