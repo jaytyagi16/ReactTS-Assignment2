@@ -94,7 +94,7 @@ const Home = () => {
             <div className="loader"></div>
           </div>
         ) : (
-          <div className="w-full mt-10 grid grid-cols-4">
+          <div className="w-full mt-10 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product) => (
                 <div

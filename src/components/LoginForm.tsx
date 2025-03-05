@@ -7,6 +7,7 @@ import { loginForm } from "../types/Forms";
 import { UserStore } from "./SignupForm";
 import { useAppDispatch } from "../redux/hooks";
 import { setIsLoggedIn } from "../redux/slices/authSlice";
+import { toast } from "react-toastify";
 
 const schemaValidation = Yup.object({
   email: Yup.string()
@@ -33,7 +34,7 @@ const LoginForm: React.FC = () => {
 
     const storedUsers = localStorage.getItem("allUsers");
     if (!storedUsers) {
-      alert("No users found. Please sign up first.");
+      toast.error("No users found. Please sign up first.");
       return;
     }
 
@@ -44,14 +45,14 @@ const LoginForm: React.FC = () => {
     );
 
     if (foundUser) {
-      alert("Login successful");
+      toast.success("Login successful");
       dispatch(setIsLoggedIn({
         emailId: userEmail,
         isLoggedIn: true
       }))
       navigate("/home");
     } else {
-      alert("Incorrect email or password");
+      toast.error("Incorrect email or password!")
     }
   };
 

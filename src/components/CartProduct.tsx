@@ -28,7 +28,7 @@ const CartProduct: React.FC<CartProductProps> = (props) => {
       {/* Product Details */}
       <div className="flex flex-col flex-grow">
         <p className="font-semibold text-lg">{title}</p>
-        <p className="text-sm text-gray-600 line-clamp-2">
+        <p className="text-sm text-gray-600 line-clamp-2" title={description}>
           {description.split(" ").slice(0, 20).join(" ") + "..."}
         </p>
         <div className="flex justify-between items-center mt-3">

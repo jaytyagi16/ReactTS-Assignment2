@@ -3,6 +3,7 @@ import Home from "./pages/Home"
 import LoginPage from "./pages/LoginPage"
 import ProductDetails from "./pages/ProductDetails"
 import Cart from "./pages/Cart"
+import { ToastContainer } from "react-toastify"
 
 const App = () => {
   return (
@@ -28,6 +29,8 @@ const App = () => {
           element={<Cart/>}
         />
       </Routes>
+
+      <ToastContainer/>
     </div>
   )
 }

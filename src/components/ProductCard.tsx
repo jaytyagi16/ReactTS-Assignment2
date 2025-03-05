@@ -1,5 +1,5 @@
 import React from 'react'
-import shoppingCartIcon from "../assets/shopping-cart.png"
+import { FaShoppingCart } from "react-icons/fa";
 import star from "../assets/star.png"
 import { Product } from '../types/Product'
 
@@ -15,17 +15,17 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
     <div>
         <div className='flex flex-col gap-2 border rounded-xl overflow-hidden h-[450px]'>
             {/* image container */}
-            <div className='h-[40%] border-b'>
+            <div className='h-[40%]'>
                 <img src={image} alt="Image" loading='lazy' className='w-full h-full object-contain select-none p-2' />
             </div>
 
             <div className='flex flex-col justify-evenly gap-2 px-4 pb-2 h-[70%]'>
-                <p className='font-bold text-sm'>{title.split(" ").slice(0, 4).join(" ") + "..."}</p>
+                <p className='font-bold text-sm' title={title}>{title.split(" ").slice(0, 4).join(" ") + "..."}</p>
                 <div className='flex items-center gap-2'>
                     <p>{rating.rate}</p>
                     <img src={star} alt="Star" loading='lazy' width={19} height={19}/>
                 </div>
-                <p className='text-xs'>{description.split(" ").slice(0, 10).join(" ") + "..."}</p>
+                <p className='text-xs' title={description}>{description.split(" ").slice(0, 6).join(" ") + "..."}</p>
                 <p className='font-semibold'>${price}</p>
                 {
                     isLoggedIn ? 
@@ -36,8 +36,10 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
                             addToCart();
                         }}
                         >
-                            <img src={shoppingCartIcon} alt="CartIcon" width={20} height={19} loading='lazy' />
-                            <p>{isInCart ? "Added to Cart" : "Add to Cart"}</p>
+                            <div className='flex gap-1.5 items-center'>
+                                <FaShoppingCart className=''/>
+                                <p className='text-sm w-fit'>{isInCart ? "Added to Cart" : "Add to Cart"}</p>
+                            </div>
                         </button>
                     ) :
                     (

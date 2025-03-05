@@ -22,7 +22,6 @@ const SearchBar: React.FC<SearchBarProps> = ({products, setFilteredProducts}) =>
             product.title.toLowerCase().includes(searchTerm) ||
             product.category.toLowerCase().includes(searchTerm)
         );
-        console.log(filtered)
         setFilteredProducts(filtered);
     }
     
@@ -31,7 +30,7 @@ const SearchBar: React.FC<SearchBarProps> = ({products, setFilteredProducts}) =>
        <input
         type='text'
         placeholder='Search by category or name'
-        className='w-[60%] border-2 border-green-700 rounded-2xl p-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-600'
+        className='w-full sm:w-[60%] border-2 border-green-700 rounded-2xl p-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-600'
         value={text}
         onChange={handleSearch}
        />

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginForm, signupFormInputs } from "../types/Forms";
+import { toast } from "react-toastify"
 
 const schemaValidation = Yup.object({
   firstName: Yup.string().required("First Name is Required"),
@@ -54,7 +55,7 @@ const SignupForm: React.FC<SignupFormProps> = (props) => {
     console.log("Users: ", users);
 
     localStorage.setItem("allUsers", JSON.stringify(users));
-    alert("User created successfully");
+    toast.success("Sign up successful!")
     setLogin(true);
   };
   return (
@@ -65,9 +66,9 @@ const SignupForm: React.FC<SignupFormProps> = (props) => {
         className="mt-10 flex flex-col gap-8 lg:w-[446px]"
       >
         {/* first name and last name */}
-        <div className="flex items-center gap-10">
+        <div className="flex flex-col md:flex-row items-center gap-10">
           {/* first name */}
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 md:w-fit w-full">
             <label className="font-bold">First Name</label>
             <input
               {...register("firstName")}
@@ -78,7 +79,7 @@ const SignupForm: React.FC<SignupFormProps> = (props) => {
             )}
           </div>
           {/* last name */}
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 md:w-fit w-full">
             <label className="font-bold">Last Name</label>
             <input
               {...register("lastName")}

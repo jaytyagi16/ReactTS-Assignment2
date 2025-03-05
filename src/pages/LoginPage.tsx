@@ -10,8 +10,8 @@ const LoginPage: React.FC = () => {
   const [login, setLogin] = useState<boolean>(true);
 
   return (
-    <div className="max-w-screen flex flex-row gap-24 mx-auto">
-      <div className="w-[30%] h-full">
+    <div className="max-w-[90%] flex md:flex-row flex-col md:gap-14 mx-auto mb-10">
+      <div className="md:w-[40%] h-full">
         <img src={loginImage} alt="Login Image" className="h-[650px]" />
       </div>
 
